@@ -12,8 +12,8 @@
       --bg:        #033048;
       --surface:   #042d43;
       --border:    #0a5070;
-      --gold:      #c9a84c;
-      --gold-dim:  #7a6230;
+      --gold:      #D42C30;
+      --gold-dim:  #a01f22;
       --cream:     #ffffff;
       --muted:     #8ab4c8;
       --text:      #ffffff;
@@ -51,7 +51,7 @@
     header::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%);
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,44,48,0.08) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -100,7 +100,7 @@
 
     h1 em {
       font-style: italic;
-      color: var(--gold);
+      color: #D42C30;
     }
 
     .header-desc {
@@ -197,7 +197,7 @@
     }
 
     .artwork:hover .artwork-frame {
-      box-shadow: 0 8px 50px rgba(201,168,76,0.15), 0 2px 20px rgba(0,0,0,0.8);
+      box-shadow: 0 8px 50px rgba(212,44,48,0.15), 0 2px 20px rgba(0,0,0,0.8);
       border-color: var(--gold-dim);
     }
 
@@ -289,6 +289,24 @@
       opacity: 0.8;
     }
 
+    .artwork-overlay .size {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    .artwork-overlay .price {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #ffffff;
+      margin-top: 5px;
+      font-weight: 600;
+    }
+
     /* Number badge */
     .artwork-number {
       position: absolute;
@@ -343,17 +361,17 @@
     .lb-nav {
       position: fixed;
       top: 50%; transform: translateY(-50%);
-      font-size: 28px;
-      color: var(--gold-dim);
+      font-size: 72px;
+      color: rgba(255,255,255,0.6);
       cursor: pointer;
-      transition: color .3s;
+      transition: color .3s, transform .2s;
       padding: 20px;
       line-height: 1;
       user-select: none;
     }
-    .lb-nav:hover { color: var(--gold); }
-    #lb-prev { left: 20px; }
-    #lb-next { right: 20px; }
+    .lb-nav:hover { color: #ffffff; transform: translateY(-50%) scale(1.15); }
+    #lb-prev { left: 10px; }
+    #lb-next { right: 10px; }
 
     .lb-caption {
       position: fixed;
@@ -374,6 +392,24 @@
       letter-spacing: 3px;
       color: var(--gold);
       margin-top: 4px;
+    }
+
+    .lb-caption .size {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-top: 3px;
+      text-transform: uppercase;
+    }
+
+    .lb-caption .price {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #ffffff;
+      margin-top: 6px;
+      font-weight: 600;
     }
 
     /* ── Footer ── */
@@ -412,7 +448,7 @@
     /* ── How-to banner ── */
     .howto {
       background: rgba(201,168,76,0.05);
-      border: 1px solid rgba(201,168,76,0.15);
+      border: 1px solid rgba(212,44,48,0.15);
       border-left: 3px solid var(--gold-dim);
       max-width: 800px;
       margin: 0 auto 60px;
@@ -439,7 +475,7 @@
     <span></span><i>✦</i><span></span>
   </div>
   <p class="subtitle">Exhibition Catalogue</p>
-  <h1>The <em>Collection</em></h1>
+  <h1><span style="color:#D42C30">Carlos</span> <em>Jorge</em></h1>
   <p class="header-desc">All Artworks &nbsp;·&nbsp; Fine Art Presentation</p>
 </header>
 
@@ -468,6 +504,8 @@
   <div class="lb-caption">
     <div class="title" id="lb-title"></div>
     <div class="meta" id="lb-meta"></div>
+    <div class="size" id="lb-size"></div>
+    <div class="price" id="lb-price"></div>
   </div>
 </div>
 
@@ -481,55 +519,52 @@
 <script>
   // ── Artwork data — replace src, title, meta for each slot ──
   const artworks = [
-  { src: 'painting1.jpg', title: 'painting1.jpg',  meta: 'carlosjorge · Year' },
-    { src: 'painting2.jpg', title: 'painting2.jpg',  meta: 'carlosjorge . Year' },
-    { src: 'painting3.jpg', title: 'painting3.jpg',  meta: 'carlosjorge · Year' },
-    { src: 'painting4.jpg', title: 'painting4.jpg',  meta: 'carlosjorge · Year' },
-    { src: 'painting5.jpg', title: 'painting5.jpg',  meta: 'carlosjorge · Year' },
-    { src: 'painting6.jpg', title: 'painting6.jpg',  meta: 'carlosjorge · Year' },
-    { src: 'painting7.jpg', title: 'painting7.jpg',  meta: 'carlosjorge · Year' },
-    { src: 'painting8.jpg', title: 'painting8.jpg',  meta: 'carlosjorge · Year' },
-    { src: 'painting9.jpg', title: 'painting9.jpg',  meta: 'carlosjorge · Year' },
-    { src: 'painting10.jpg', title: 'painting10.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting11.jpg', title: 'painting11.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting12.jpg', title: 'painting12.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting13.jpg', title: 'painting13.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting14.jpg', title: 'painting14.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting15.jpg', title: 'painting15.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting16.jpg', title: 'painting16.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting17.jpg', title: 'painting17.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting18.jpg', title: 'painting18.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting19.jpg', title: 'painting19.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting20.jpg', title: 'painting20.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting21.jpg', title: 'painting21.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting22.jpg', title: 'painting22.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting23.jpg', title: 'painting23.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting24.jpg', title: 'painting24.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting25.jpg', title: 'painting25.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting26.jpg', title: 'painting26.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting27.jpg', title: 'painting27.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting28.jpg', title: 'painting28.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting29.jpg', title: 'painting29.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting30.jpg', title: 'painting30.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting31.jpg', title: 'painting31.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting32.jpg', title: 'painting32.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting33.jpg', title: 'painting33.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting34.jpg', title: 'painting34.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting35.jpg', title: 'painting35.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting36.jpg', title: 'painting36.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting37.jpg', title: 'painting37.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting38.jpg', title: 'painting38.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting39.jpg', title: 'painting39.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting40.jpg', title: 'painting40.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting41.jpg', title: 'painting41.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting42.jpg', title: 'painting42.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting43.jpg', title: 'painting43.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting44.jpg', title: 'painting44.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting45.jpg', title: 'painting45.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting46.jpg', title: 'painting46.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting47.jpg', title: 'painting47.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting48.jpg', title: 'painting48.jpg', meta: 'carlosjorge · Year' },
-    { src: 'painting49.jpg', title: 'painting49.jpg', meta: 'carlosjorge · Year' },
+    { src: 'painting1.jpg', title: 'Cuadroverdesobrenaranja',  meta: 'CarlosJorge · _', size: '154 x 172 cm', price: '$6,000' },
+    { src: 'painting2.jpg', title: 'Bardas2',  meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting3.jpg', title: 'Bardagris/café/azul',  meta: 'CarlosJorge · _', size: '188 x 148 cm', price: '$6,000' },
+    { src: 'painting4.jpg', title: 'Númeromayaenocre',  meta: 'CarlosJorge · 2019', size: '200 x 210 cm', price: '$6,000' },
+    { src: 'painting5.jpg', title: 'Bardagriscuadroenocre',  meta: 'CarlosJorge · _', size: '118 x 173 cm', price: '$5,000' },
+    { src: 'painting6.jpg', title: 'Cuadroverdedentrodeotro',  meta: 'CarlosJorge · _', size: '131 x 89 cm', price: '$4,000' },
+    { src: 'painting7.jpg', title: 'Cuadro azul',  meta: 'CarlosJorge · _', size: '90 x 130 cm', price: '$4,000' },
+    { src: 'painting8.jpg', title: 'Bardasazulesamarillo',  meta: 'CarlosJorge · 2018', size: '144 x 195 cm', price: '$5,500' },
+    { src: 'painting9.jpg', title: 'Cuadrocaféyamarillo',  meta: 'CarlosJorge · _', size: '95 x 92 cm', price: '$3,000' },
+    { src: 'painting10.jpg', title: 'Cuadrosrojosrosasnaranja', meta: 'Artist Name · Year', size: '159 x 225 cm', price: '$6,000' },
+    { src: 'painting11.jpg', title: 'Cuadrocafécírculosverdes', meta: 'CarlosJorge · _', size: '170 x 202 cm', price: '$6,000' },
+    { src: 'painting12.jpg', title: 'Cuadroverdenaranjaymorado', meta: 'CarlosJorge · _', size: '146 x 107 cm', price: '$5,000' },
+    { src: 'painting13.jpg', title: 'Bardas', meta: 'CarlosJorge · _', size: '151 x 122 cm', price: '$5,000' },
+    { src: 'painting14.jpg', title: 'Bardas3', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting15.jpg', title: 'Zapotes-mujer', meta: 'CarlosJorge · _', size: '120 x 93 cm', price: '$3,000' },
+    { src: 'painting16.jpg', title: 'Cuadro naranja,rayas negras rosas naranjas', meta: 'CarlosJorge · _', size: '132 x 164 cm', price: '$5,000' },
+    { src: 'painting17.jpg', title: 'Barda verde con azul naranja rosa', meta: 'CarlosJorge · _', size: '209 x 131 cm', price: '$6,000' },
+    { src: 'painting18.jpg', title: 'Artwork Title 18', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting19.jpg', title: 'Artwork Title 19', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting20.jpg', title: 'Artwork Title 20', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting21.jpg', title: 'Artwork Title 21', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting22.jpg', title: 'Artwork Title 22', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting23.jpg', title: 'Artwork Title 23', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting24.jpg', title: 'Artwork Title 24', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting25.jpg', title: 'Artwork Title 25', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting26.jpg', title: 'Artwork Title 26', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting27.jpg', title: 'Artwork Title 27', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting28.jpg', title: 'Artwork Title 28', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting29.jpg', title: 'Artwork Title 29', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting30.jpg', title: 'Artwork Title 30', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting31.jpg', title: 'Artwork Title 31', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting32.jpg', title: 'Artwork Title 32', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting33.jpg', title: 'Artwork Title 33', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting34.jpg', title: 'Artwork Title 34', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting35.jpg', title: 'Artwork Title 35', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting36.jpg', title: 'Artwork Title 36', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting37.jpg', title: 'Artwork Title 37', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting38.jpg', title: 'Artwork Title 38', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting39.jpg', title: 'Artwork Title 39', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting40.jpg', title: 'Artwork Title 40', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting41.jpg', title: 'Artwork Title 38', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting42.jpg', title: 'Artwork Title 39', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting43.jpg', title: 'Artwork Title 40', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting44.jpg', title: 'Artwork Title 38', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting45.jpg', title: 'Artwork Title 39', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
+    { src: 'painting46.jpg', title: 'Artwork Title 40', meta: 'CarlosJorge · _', size: '00 x 00 cm', price: '$0,000' },
   ];
 
   // Vary placeholder heights to simulate masonry with real paintings
@@ -560,6 +595,8 @@
         <div class="artwork-overlay">
           <div class="title">${art.title}</div>
           <div class="meta">${art.meta}</div>
+          <div class="size">${art.size}</div>
+          <div class="price">${art.price}</div>
         </div>
       </div>
       <div class="artwork-number">${String(i+1).padStart(2,'0')}</div>`;
@@ -607,6 +644,8 @@
     }
     document.getElementById('lb-title').textContent = art.title;
     document.getElementById('lb-meta').textContent = art.meta;
+    document.getElementById('lb-size').textContent = art.size;
+    document.getElementById('lb-price').textContent = art.price;
   }
 
   function lbNav(dir) {
