@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carlos Jorge - Biography</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Raleway:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #033048;
+      --surface:   #042d43;
+      --border:    #0a5070;
+      --red:       #D42C30;
+      --red-dim:   #a01f22;
+      --cream:     #ffffff;
+      --muted:     #8ab4c8;
+      --text:      #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    /* ── Grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ── Header ── */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 80px 40px 60px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,44,48,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .header-rule span {
+      display: block;
+      height: 1px;
+      width: 80px;
+      background: linear-gradient(90deg, transparent, var(--red-dim));
+    }
+    .header-rule span:last-child {
+      background: linear-gradient(90deg, var(--red-dim), transparent);
+    }
+    .header-rule i {
+      font-style: normal;
+      color: var(--red);
+      font-size: 10px;
+      letter-spacing: 4px;
+    }
+
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(10px, 1.2vw, 13px);
+      letter-spacing: 6px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0.85;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(42px, 7vw, 90px);
+      line-height: 1.0;
+      color: var(--cream);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    h1 span {
+      color: var(--red);
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--red);
+    }
+
+    .header-desc {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 22px;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 28px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav a {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .3s;
+    }
+
+    nav a:hover { color: var(--red); }
+
+    /* ── Content ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 40px 100px;
+    }
+
+    .intro {
+      font-size: 18px;
+      font-style: italic;
+      color: var(--cream);
+      margin-bottom: 50px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.8;
+    }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin: 50px 0 25px;
+      opacity: 0.9;
+    }
+
+    .bio-section {
+      margin-bottom: 40px;
+    }
+
+    .bio-section p {
+      font-size: 16px;
+      color: var(--text);
+      margin-bottom: 15px;
+    }
+
+    .exhibition-list {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    .exhibition-list li {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 12px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .exhibition-list li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--red);
+      font-size: 20px;
+    }
+
+    .year {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    .location {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 50px 40px;
+    }
+
+    footer p {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .footer-rule {
+      width: 60px;
+      height: 1px;
+      background: var(--red-dim);
+      margin: 20px auto;
+      opacity: 0.4;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    header .subtitle  { animation: fadeDown .8s ease .1s both; }
+    header h1         { animation: fadeDown .9s ease .25s both; }
+    header .header-desc { animation: fadeDown .8s ease .45s both; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .container > * {
+      animation: fadeIn .8s ease both;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-rule">
+    <span></span><i>✦</i><span></span>
+  </div>
+  <p class="subtitle">Artist Biography</p>
+  <h1><span>Carlos</span> <em>Jorge</em></h1>
+  <p class="header-desc">Mexican Artist &nbsp;·&nbsp; b. 1970</p>
+</header>
+
+<nav>
+  <a href="index.html">Artworks</a>
+  <a href="biography.html">Biography</a>
+</nav>
+
+<!-- Content -->
+<div class="container">
+  <div class="intro">
+    Carlos Jorge (b. 1970) is a Mexican artist, currently based in Miami, who is most known for his large-scale paintings that display vibrant and exuberant use of color. The artist uses his canvas to express surreal narratives, an exercise of memory, in which pop iconography, fashion, and allusions to Miró and Gauguin collide. With deliberate employment of color and texture, the artist's abstractions create planes of bright and evocative imagery.
+  </div>
+
+  <div class="bio-section">
+    <h2>Education</h2>
+    <ul class="exhibition-list">
+      <li>International School of Art, Umbria, Italia - Painting and Sculpture (studied under Wayne Thiebaud and Knox Martin)</li>
+      <li>Instituto Tecnológico y de Estudios Superiores de Monterrey, México - Architecture</li>
+      <li>Universidad de El Mayab, Mérida, Yucatán, México - Business</li>
+      <li>Briar Cliff College, Miami, Florida, USA - Business</li>
+    </ul>
+  </div>
+
+  <div class="bio-section">
+    <h2>Solo Exhibitions (Selected)</h2>
+    <ul class="exhibition-list">
+      <li><span class="year">2025</span> "CARLOS JORGE PAINTINGS" <span class="location">Liquid Art System, Miami, Florida, USA</span></li>
+      <li><span class="year">2025</span> "CARLOS JORGE PINTURAS" <span class="location">Alejandra Topete Gallery, Ciudad de México</span></li>
+      <li><span class="year">2023</span> "SELENOFILIA" <span class="location">Fabien Castanier Gallery, Miami, Florida, USA</span></li>
+      <li><span class="year">2022</span> "THE FORCE" <span class="location">Pen Project, Miami, Florida, USA</span></li>
+      <li><span class="year">2021</span> "THE FORCE" <span class="location">Paramount World Center, Miami, Florida, USA</span></li>
+      <li><span class="year">2021</span> "BARDAS" <span class="location">Museo de la Ciudad, Mérida, Yucatán, México</span></li>
+      <li><span class="year">2021</span> "FORM AND COLOR" <span class="location">Galería Black Ship, Miami, Florida, USA</span></li>
+      <li><span class="year">2020</span> "CARLOS JORGE" <span class="location">Fannaporter Gallery, Dubai</span></li>
+      <li><span class="year">2020</span> "MUROS DE LUZ" <span class="location">Malosa Gallery, Chicago, Illinois, USA</span></li>
+      <li><span class="year">2020</span> "CARLOS JORGE" <span class="location">Paramount World Center, Miami, Florida, USA</span></li>
+      <li><span class="year">2019</span> "BARDAS" <span class="location">Malosa Gallery, Chicago, Illinois, USA</span></li>
+      <li><span class="year">2018</span> "BARDAS" <span class="location">Dotfiftyone Gallery, Miami, Florida, USA</span></li>
+      <li><span class="year">2016</span> "CARLOS JORGE, PINTURAS" <span class="location">Museo de la Ciudad, Mérida, Yucatán, México</span></li>
+      <li><span class="year">2012</span> "LOS FAMOSOS" <span class="location">Galería Casa Colon, Mérida, Yucatán, México</span></li>
+      <li><span class="year">2010</span> "EL REY AZUL" <span class="location">Centro Cultural Olimpo, Mérida, Yucatán, México</span></li>
+      <li><span class="year">2007</span> "SUPER LIGHT" <span class="location">Galería Casa Colon, Mérida, Yucatán, México</span></li>
+      <li><span class="year">2006</span> "SUPER MORFINA" <span class="location">Dotfiftyone Gallery, Miami, Florida, USA</span></li>
+      <li><span class="year">1997</span> "VISIONES" <span class="location">Galería Casa Colon, Mérida, Yucatán, México</span></li>
+      <li><span class="year">1993</span> "GENESIS" <span class="location">La Galería, Mérida, Yucatán, México</span></li>
+    </ul>
+  </div>
+
+  <div class="bio-section">
+    <h2>Group Exhibitions (Selected)</h2>
+    <ul class="exhibition-list">
+      <li><span class="year">2025</span> "Make-A-Wish" <span class="location">Ball Foundation, Miami, Florida, USA</span></li>
+      <li><span class="year">2024</span> "Visionary Realms" <span class="location">Fabien Castanier Gallery, Miami, Florida, USA</span></li>
+      <li><span class="year">2023</span> "Art Miami" <span class="location">Miami, Florida, USA</span></li>
+      <li><span class="year">2022</span> "5600 GALLERY" <span class="location">Miami, Florida, USA</span></li>
+      <li><span class="year">2022</span> "LOS COLORES DE MIAMI" <span class="location">Consulado Mexicano & Colombiano, Miami, Florida, USA</span></li>
+      <li><span class="year">2022</span> "SUNKISSED" <span class="location">Fabien Castanier Gallery, Miami, Florida, USA</span></li>
+      <li><span class="year">2022</span> "EXPOSICIÓN COLECTIVA" <span class="location">Consulado Mexicano en Miami, Florida, USA</span></li>
+      <li><span class="year">2011</span> "ARTISTAS LATINOAMERICANOS" <span class="location">Universidad de California, USA</span></li>
+      <li><span class="year">1998</span> Séptima Bienal de Artes Visuales de Yucatán <span class="location">Museo del Chopo, Ciudad de México</span></li>
+    </ul>
+  </div>
+
+  <div class="bio-section">
+    <h2>Awards & Recognition</h2>
+    <ul class="exhibition-list">
+      <li><span class="year">1997</span> Honorable Mention, Seventh Biennial of Visual Arts, Mérida, Yucatán, México</li>
+      <li><span class="year">1998</span> Selected for the Eighth Biennial of Visual Arts of Yucatán, Mérida, Yucatán, México</li>
+    </ul>
+  </div>
+
+  <div class="bio-section">
+    <h2>Collections</h2>
+    <ul class="exhibition-list">
+      <li>Museum of Contemporary Art (MACAY), Mérida, Yucatán, México</li>
+      <li>Museo de la Ciudad, Mérida, Yucatán, México</li>
+      <li>MOLAA (Museum of Latin American Art), Long Beach, California, USA</li>
+      <li>Paramount World Center, Miami, Florida, USA</li>
+      <li>Miami-Dade Public Library System, Miami, Florida, USA</li>
+      <li>Silvester Cancer Association, Miami, Florida, USA</li>
+      <li>Numerous private collections</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-rule"></div>
+  <p>Carlos Jorge &nbsp;·&nbsp; Artist Biography</p>
+  <div class="footer-rule"></div>
+</footer>
+
+</body>
+</html>
