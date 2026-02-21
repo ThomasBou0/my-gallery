@@ -134,6 +134,30 @@
 
     nav a:hover { color: var(--gold); }
 
+    nav select {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: border-color .3s, color .3s;
+    }
+
+    nav select:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    nav select option {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+
     /* ── Section label ── */
     .section-label {
       text-align: center;
@@ -483,6 +507,11 @@
   <a href="#gallery">Works</a>
   <a href="#" onclick="openAll()">Slideshow</a>
   <a href="biography.html">Biography</a>
+  <select id="sort-select" onchange="sortArtworks(this.value)">
+    <option value="">Sort by Price</option>
+    <option value="low-high">Price: Low to High</option>
+    <option value="high-low">Price: High to Low</option>
+  </select>
 </nav>
 
 
@@ -520,7 +549,7 @@
 <script>
   // ── Artwork data — replace src, title, meta for each slot ──
   const artworks = [
-    { src: 'painting1.jpg', title: 'Cuadro verde sobre naranja',  meta: 'Carlos Jorge · _', size: '154 x 172 cm', price: '$6,000' },
+  { src: 'painting1.jpg', title: 'Cuadro verde sobre naranja',  meta: 'Carlos Jorge · _', size: '154 x 172 cm', price: '$6,000' },
     { src: 'painting2.jpg', title: 'Bardas 2',  meta: 'Carlos Jorge · _', size: '00 x 00 cm', price: '$0,000' },
     { src: 'painting3.jpg', title: 'Bardas gris /café /azul',  meta: 'Carlos Jorge · _', size: '188 x 148 cm', price: '$6,000' },
     { src: 'painting4.jpg', title: 'Número maya en ocre',  meta: 'Carlos Jorge · 2019', size: '200 x 210 cm', price: '$6,000' },
@@ -668,6 +697,37 @@
     if (e.target === this) closeLightbox();
   });
 
+  // ── Sort function ──
+  function sortArtworks(sortType) {
+    if (!sortType) return;
+    
+    const grid = document.getElementById('gallery-grid');
+    const artworkElements = Array.from(grid.children);
+    
+    // Extract price as number for sorting
+    const parsePrice = (priceStr) => {
+      const num = priceStr.replace(/[^0-9]/g, '');
+      return parseInt(num) || 0;
+    };
+    
+    // Sort based on selection
+    artworkElements.sort((a, b) => {
+      const indexA = parseInt(a.dataset.index);
+      const indexB = parseInt(b.dataset.index);
+      const priceA = parsePrice(artworks[indexA].price);
+      const priceB = parsePrice(artworks[indexB].price);
+      
+      if (sortType === 'low-high') {
+        return priceA - priceB;
+      } else if (sortType === 'high-low') {
+        return priceB - priceA;
+      }
+      return 0;
+    });
+    
+    // Re-append in sorted order
+    artworkElements.forEach(el => grid.appendChild(el));
+  }
 
 </script>
 </body>
