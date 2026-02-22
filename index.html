@@ -196,30 +196,42 @@
     }
 
     /* ── Responsive ── */
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
+      .catalog {
+        padding: 40px 20px 80px;
+      }
+      
       .catalog-grid {
-        gap: 20px;
+        gap: 15px;
       }
       
       .artwork-info {
-        padding: 15px;
+        padding: 12px;
       }
       
       .artwork-info h3 {
-        font-size: 18px;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+      
+      .artwork-info .artist {
+        font-size: 8px;
+        margin-bottom: 5px;
       }
       
       .artwork-info .medium,
       .artwork-info .size {
-        font-size: 11px;
+        font-size: 10px;
+        margin-bottom: 4px;
       }
       
       .artwork-info .price {
-        font-size: 16px;
+        font-size: 14px;
+        padding-top: 8px;
       }
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 350px) {
       .catalog-grid {
         grid-template-columns: 1fr;
         gap: 20px;
