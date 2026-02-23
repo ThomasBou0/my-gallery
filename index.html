@@ -155,6 +155,25 @@
       color: var(--text);
     }
 
+    .nav-button {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all .3s;
+    }
+
+    .nav-button:hover {
+      border-color: var(--red);
+      color: var(--red);
+      background: rgba(250, 190, 86, 0.05);
+    }
+
     /* ── Catalog Container ── */
     .catalog {
       max-width: 1400px;
@@ -233,6 +252,33 @@
         padding-top: 4px;
         font-weight: 300;
         opacity: 0.7;
+      }
+    }
+
+    /* ── Print Styles ── */
+    @media print {
+      body::before {
+        display: none;
+      }
+      
+      nav {
+        display: none !important;
+      }
+      
+      .section-label {
+        page-break-after: avoid;
+      }
+      
+      .artwork-card {
+        page-break-inside: avoid;
+      }
+      
+      .catalog-grid {
+        gap: 20px;
+      }
+      
+      #lightbox {
+        display: none !important;
       }
     }
 
@@ -498,6 +544,9 @@
     <option value="low-high">Price: Low to High</option>
     <option value="high-low">Price: High to Low</option>
   </select>
+  <button class="nav-button" onclick="window.print()">Print Catalog</button>
+  <button class="nav-button" onclick="shareLink()">Share Link</button>
+  <button class="nav-button" onclick="downloadPDF()">Download PDF</button>
 </nav>
 
 <!-- Catalog -->
@@ -1161,6 +1210,47 @@
 </footer>
 
 <script>
+  // ── Share Link Function ──
+  function shareLink() {
+    const url = window.location.href;
+    
+    // Try to use native share API (mobile)
+    if (navigator.share) {
+      navigator.share({
+        title: 'Carlos Jorge - Art Catalog',
+        text: 'View Carlos Jorge\'s art collection',
+        url: url
+      }).catch(() => {
+        // Fallback to copy
+        copyToClipboard(url);
+      });
+    } else {
+      // Desktop - copy to clipboard
+      copyToClipboard(url);
+    }
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Link copied to clipboard!');
+    }).catch(() => {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      alert('Link copied to clipboard!');
+    });
+  }
+
+  // ── PDF Download Function ──
+  function downloadPDF() {
+    alert('To save as PDF:\n\n1. Click "Print Catalog"\n2. Choose "Save as PDF" as your printer\n3. Click "Save"\n\nThis will create a professional PDF of the catalog.');
+    window.print();
+  }
+
   // ── Make each artwork clickable to open lightbox ──
   document.addEventListener('DOMContentLoaded', function() {
     const cards = document.querySelectorAll('.artwork-card');
