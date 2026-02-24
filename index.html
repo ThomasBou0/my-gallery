@@ -117,49 +117,81 @@
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
-      padding: 20px 40px;
+      gap: 10px;
+      padding: 20px 15px;
       border-bottom: 1px solid var(--border);
     }
 
     @media (max-width: 768px) {
       nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
         gap: 8px;
-        padding: 15px 10px;
+        padding: 12px 10px;
+      }
+      
+      nav a:nth-child(1) {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      
+      nav select:nth-child(2) {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      
+      nav .nav-button:nth-of-type(1) {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      
+      nav .nav-button:nth-of-type(2) {
+        grid-column: 2;
+        grid-row: 2;
+      }
+      
+      nav .nav-button:nth-of-type(3) {
+        grid-column: 1 / -1;
+        grid-row: 3;
       }
       
       nav a,
       nav select,
       .nav-button {
-        font-size: 8px !important;
-        letter-spacing: 1px !important;
-        padding: 5px 8px !important;
+        font-size: 7px !important;
+        letter-spacing: 0.5px !important;
+        padding: 5px 6px !important;
+        width: 100%;
+        text-align: center;
       }
     }
 
     nav a {
       font-family: 'Cinzel', serif;
-      font-size: 11px;
-      letter-spacing: 3px;
+      font-size: 9px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--muted);
       text-decoration: none;
       transition: color .3s;
+      white-space: nowrap;
     }
 
     nav a:hover { color: var(--red); }
 
     nav select {
       font-family: 'Cinzel', serif;
-      font-size: 11px;
-      letter-spacing: 2px;
+      font-size: 9px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--muted);
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 6px 12px;
+      padding: 5px 10px;
       cursor: pointer;
       transition: border-color .3s, color .3s;
+      white-space: nowrap;
     }
 
     nav select:hover {
@@ -174,15 +206,16 @@
 
     .nav-button {
       font-family: 'Cinzel', serif;
-      font-size: 11px;
-      letter-spacing: 2px;
+      font-size: 9px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--muted);
       background: transparent;
       border: 1px solid var(--border);
-      padding: 6px 12px;
+      padding: 5px 10px;
       cursor: pointer;
       transition: all .3s;
+      white-space: nowrap;
     }
 
     .nav-button:hover {
@@ -248,9 +281,9 @@
       }
       
       .artwork-info h3 {
-        font-size: 12px;
-        margin-bottom: 5px;
-        line-height: 1.2;
+        font-size: 10px;
+        margin-bottom: 4px;
+        line-height: 1.1;
       }
       
       .artwork-info .artist {
