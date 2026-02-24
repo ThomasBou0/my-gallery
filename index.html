@@ -115,9 +115,26 @@
     nav {
       display: flex;
       justify-content: center;
-      gap: 32px;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
       padding: 20px 40px;
       border-bottom: 1px solid var(--border);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        gap: 8px;
+        padding: 15px 10px;
+      }
+      
+      nav a,
+      nav select,
+      .nav-button {
+        font-size: 8px !important;
+        letter-spacing: 1px !important;
+        padding: 5px 8px !important;
+      }
     }
 
     nav a {
@@ -257,28 +274,105 @@
 
     /* ── Print Styles ── */
     @media print {
+      @page {
+        margin: 1.5cm;
+        size: A4;
+      }
+      
       body::before {
         display: none;
+      }
+      
+      body {
+        background: white !important;
       }
       
       nav {
         display: none !important;
       }
       
-      .section-label {
+      header {
+        padding: 30px 20px 20px;
+        border-bottom: 2px solid #0a5070;
         page-break-after: avoid;
+      }
+      
+      .section-label {
+        padding: 20px 0;
+        margin-bottom: 20px;
+        page-break-after: avoid;
+      }
+      
+      .catalog {
+        padding: 20px 0;
+      }
+      
+      .catalog-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 15px !important;
       }
       
       .artwork-card {
         page-break-inside: avoid;
+        break-inside: avoid;
+        background: #f8f8f8 !important;
+        border: 1px solid #0a5070 !important;
+        margin-bottom: 10px;
       }
       
-      .catalog-grid {
-        gap: 20px;
+      .artwork-image {
+        aspect-ratio: 4/3;
+        height: auto;
+      }
+      
+      .artwork-image img {
+        filter: none !important;
+      }
+      
+      .artwork-info {
+        padding: 12px !important;
+        min-height: auto !important;
+      }
+      
+      .artwork-info .artist {
+        font-size: 7px !important;
+        color: #FABE56 !important;
+      }
+      
+      .artwork-info h3 {
+        font-size: 11px !important;
+        color: #033048 !important;
+        margin-bottom: 6px !important;
+      }
+      
+      .artwork-info .medium,
+      .artwork-info .size {
+        font-size: 8px !important;
+        color: #555 !important;
+        margin-bottom: 2px !important;
+      }
+      
+      .artwork-info .price {
+        font-size: 9px !important;
+        color: #033048 !important;
+        opacity: 1 !important;
+        border-top: 1px solid #0a5070 !important;
+        padding-top: 6px !important;
+      }
+      
+      footer {
+        page-break-before: avoid;
+        padding: 20px;
+        border-top: 2px solid #0a5070;
       }
       
       #lightbox {
         display: none !important;
+      }
+      
+      /* Force page breaks between sections if needed */
+      .artwork-card:nth-child(12n) {
+        page-break-after: always;
       }
     }
 
