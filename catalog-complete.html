@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Carlos Jorge - Art Catalog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&family=Raleway:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #033048;
+      --surface:   #042d43;
+      --border:    #0a5070;
+      --red:       #FABE56;
+      --red-dim:   #d9a440;
+      --cream:     #ffffff;
+      --muted:     #8ab4c8;
+      --text:      #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ── Header ── */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 60px 40px 50px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,44,48,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .header-rule span {
+      display: block;
+      height: 1px;
+      width: 60px;
+      background: linear-gradient(90deg, transparent, var(--red-dim));
+    }
+    .header-rule span:last-child {
+      background: linear-gradient(90deg, var(--red-dim), transparent);
+    }
+    .header-rule i {
+      font-style: normal;
+      color: var(--red);
+      font-size: 10px;
+      letter-spacing: 4px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 60px);
+      line-height: 1.0;
+      color: var(--cream);
+      letter-spacing: 2px;
+    }
+
+    h1 span {
+      color: var(--red);
+    }
+
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(10px, 1.2vw, 13px);
+      letter-spacing: 6px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0.85;
+    }
+
+    .header-desc {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 22px;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 20px 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto auto;
+        gap: 6px;
+        padding: 10px 8px;
+        align-items: center;
+      }
+      
+      /* Row 1: Biography and Sort by Price */
+      nav a:nth-child(1) {
+        grid-column: 1 / 3;
+        grid-row: 1;
+      }
+      
+      nav select:nth-child(2) {
+        grid-column: 3;
+        grid-row: 1;
+      }
+      
+      /* Row 2: Print Catalog, Share Link, Download PDF */
+      nav .nav-button:nth-of-type(1) {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      
+      nav .nav-button:nth-of-type(2) {
+        grid-column: 2;
+        grid-row: 2;
+      }
+      
+      nav .nav-button:nth-of-type(3) {
+        grid-column: 3;
+        grid-row: 2;
+      }
+      
+      nav a,
+      nav select,
+      nav .nav-button {
+        font-size: 5.5px !important;
+        letter-spacing: 0.2px !important;
+        padding: 5px 3px !important;
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+    /* ── Catalog Container ── */
+    .catalog {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 40px 100px;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      text-align: center;
+      padding: 0 0 50px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(24px, 3vw, 36px);
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+
+    .section-label p {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Grid Layout: 2 per row ── */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+    }
+
+    /* ── Artwork Card ── */
+    .artwork-card {
+      background: rgba(4, 45, 67, 0.3);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all .4s ease;
+      cursor: pointer;
+    }
+
+    .artwork-card:hover {
+      background: rgba(4, 45, 67, 0.5);
+      border-color: var(--red-dim);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(212, 44, 48, 0.15);
+    }
+
+    .artwork-card:active {
+      transform: translateY(-3px);
+    }
+
+    /* ── Image ── */
+    .artwork-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--surface);
+      cursor: pointer;
+    }
+
+    .artwork-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s ease, filter .4s ease;
+      filter: brightness(0.9);
+    }
+
+    .artwork-card:hover .artwork-image img {
+      transform: scale(1.08);
+      filter: brightness(1);
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 48, 72, 0.97);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    #lightbox.open { display: flex; }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      box-shadow: 0 0 80px rgba(212, 44, 48, 0.1);
+      border: 1px solid var(--border);
+    }
+
+    .lb-close {
+      position: fixed;
+      top: 30px;
+      right: 40px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--muted);
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: color .3s;
+      z-index: 10001;
+    }
+    .lb-close:hover { color: var(--red); }
+
+    .lb-info {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10001;
+    }
+
+    .lb-info .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--cream);
+      margin-bottom: 5px;
+    }
+
+    .lb-info .artist {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .lb-info .details {
+      font-family: 'Raleway', sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      #lightbox {
+        padding: 20px;
+      }
+      
+      .lb-close {
+        top: 15px;
+        right: 20px;
+        font-size: 10px;
+      }
+      
+      .lb-info {
+        bottom: 20px;
+      }
+      
+      .lb-info .title {
+        font-size: 16px;
+      }
+      
+      .catalog {
+        padding: 40px 15px 80px;
+      }
+      
+      .catalog-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      
+      .artwork-info {
+        padding: 10px;
+        min-height: 140px;
+      }
+      
+      .artwork-info h3 {
+        font-size: 6px;
+        margin-bottom: 3px;
+        line-height: 1.05;
+        opacity: 0.85;
+        font-weight: 400;
+      }
+      
+      .artwork-info .artist {
+        font-size: 5.5px;
+        margin-bottom: 3px;
+      }
+      
+      .artwork-info .medium,
+      .artwork-info .size {
+        font-size: 6px;
+        margin-bottom: 2px;
+        opacity: 0.8;
+      }
+      
+      .artwork-info .price {
+        font-size: 6px;
+        padding-top: 4px;
+        font-weight: 300;
+        opacity: 0.65;
+      }
+    }
+
+    /* ── Catalog Container ── */
+    .catalog {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 40px 100px;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      text-align: center;
+      padding: 0 0 50px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(24px, 3vw, 36px);
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+
+    .section-label p {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Grid Layout: 2 per row ── */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+    }
+
+    /* ── Artwork Card ── */
+    .artwork-card {
+      background: rgba(4, 45, 67, 0.3);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all .4s ease;
+      cursor: pointer;
+    }
+
+    .artwork-card:hover {
+      background: rgba(4, 45, 67, 0.5);
+      border-color: var(--red-dim);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(212, 44, 48, 0.15);
+    }
+
+    .artwork-card:active {
+      transform: translateY(-3px);
+    }
+
+    /* ── Image ── */
+    .artwork-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--surface);
+      cursor: pointer;
+    }
+
+    .artwork-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s ease, filter .4s ease;
+      filter: brightness(0.9);
+    }
+
+    .artwork-card:hover .artwork-image img {
+      transform: scale(1.08);
+      filter: brightness(1);
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 48, 72, 0.97);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    #lightbox.open { display: flex; }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      box-shadow: 0 0 80px rgba(212, 44, 48, 0.1);
+      border: 1px solid var(--border);
+    }
+
+    .lb-close {
+      position: fixed;
+      top: 30px;
+      right: 40px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--muted);
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: color .3s;
+      z-index: 10001;
+    }
+    .lb-close:hover { color: var(--red); }
+
+    .lb-info {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10001;
+    }
+
+    .lb-info .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--cream);
+      margin-bottom: 5px;
+    }
+
+    .lb-info .artist {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .lb-info .details {
+      font-family: 'Raleway', sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      #lightbox {
+        padding: 20px;
+      }
+      
+      .lb-close {
+        top: 15px;
+        right: 20px;
+        font-size: 10px;
+      }
+      
+      .lb-info {
+        bottom: 20px;
+      }
+      
+      .lb-info .title {
+        font-size: 16px;
+      }
+      
+      .catalog {
+        padding: 40px 15px 80px;
+      }
+      
+      .catalog-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      
+      .artwork-info {
+        padding: 10px;
+        min-height: 140px;
+      }
+      
+      .artwork-info h3 {
+        font-size: 7px;
+        margin-bottom: 3px;
+        line-height: 1.05;
+      }
+      
+      .artwork-info .artist {
+        font-size: 6px;
+        margin-bottom: 3px;
+      }
+      
+      .artwork-info .medium,
+      .artwork-info .size {
+        font-size: 7px;
+        margin-bottom: 2px;
+      }
+      
+      .artwork-info .price {
+        font-size: 7px;
+        padding-top: 4px;
+        font-weight: 300;
+        opacity: 0.7;
+      }
+    }
+
+    nav a {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .3s;
+      white-space: nowrap;
+    }
+
+    nav a:hover { color: var(--red); }
+
+    nav select {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: border-color .3s, color .3s;
+      white-space: nowrap;
+    }
+
+    nav select:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    nav select option {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .nav-button {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: all .3s;
+      white-space: nowrap;
+    }
+
+    .nav-button:hover {
+      border-color: var(--red);
+      color: var(--red);
+      background: rgba(250, 190, 86, 0.05);
+    }
+
+    /* ── Catalog Container ── */
+    .catalog {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 40px 100px;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      text-align: center;
+      padding: 0 0 50px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(24px, 3vw, 36px);
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+
+    .section-label p {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Grid Layout: 2 per row ── */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .catalog {
+        padding: 40px 15px 80px;
+      }
+      
+      .catalog-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      
+      .artwork-info {
+        padding: 10px;
+        min-height: 140px;
+      }
+      
+      .artwork-info h3 {
+        font-size: 7px;
+        margin-bottom: 3px;
+        line-height: 1.05;
+      }
+      
+      .artwork-info .artist {
+        font-size: 7px;
+        margin-bottom: 4px;
+      }
+      
+      .artwork-info .medium,
+      .artwork-info .size {
+        font-size: 7px;
+        margin-bottom: 2px;
+      }
+      
+      .artwork-info .price {
+        font-size: 7px;
+        padding-top: 4px;
+        font-weight: 300;
+        opacity: 0.7;
+      }
+    }
+
+    /* ── Print Styles ── */
+    @media print {
+      @page {
+        margin: 1.5cm;
+        size: A4;
+      }
+      
+      body::before {
+        display: none;
+      }
+      
+      body {
+        background: white !important;
+      }
+      
+      nav {
+        display: none !important;
+      }
+      
+      header {
+        padding: 30px 20px 20px;
+        border-bottom: 2px solid #0a5070;
+        page-break-after: avoid;
+      }
+      
+      .section-label {
+        padding: 20px 0;
+        margin-bottom: 20px;
+        page-break-after: avoid;
+      }
+      
+      .catalog {
+        padding: 20px 0;
+      }
+      
+      .catalog-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 15px !important;
+      }
+      
+      .artwork-card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        background: #f8f8f8 !important;
+        border: 1px solid #0a5070 !important;
+        margin-bottom: 10px;
+      }
+      
+      .artwork-image {
+        aspect-ratio: 4/3;
+        height: auto;
+      }
+      
+      .artwork-image img {
+        filter: none !important;
+      }
+      
+      .artwork-info {
+        padding: 12px !important;
+        min-height: auto !important;
+      }
+      
+      .artwork-info .artist {
+        font-size: 7px !important;
+        color: #FABE56 !important;
+      }
+      
+      .artwork-info h3 {
+        font-size: 11px !important;
+        color: #033048 !important;
+        margin-bottom: 6px !important;
+      }
+      
+      .artwork-info .medium,
+      .artwork-info .size {
+        font-size: 8px !important;
+        color: #555 !important;
+        margin-bottom: 2px !important;
+      }
+      
+      .artwork-info .price {
+        font-size: 9px !important;
+        color: #033048 !important;
+        opacity: 1 !important;
+        border-top: 1px solid #0a5070 !important;
+        padding-top: 6px !important;
+      }
+      
+      footer {
+        page-break-before: avoid;
+        padding: 20px;
+        border-top: 2px solid #0a5070;
+      }
+      
+      #lightbox {
+        display: none !important;
+      }
+      
+      /* Force page breaks between sections if needed */
+      .artwork-card:nth-child(12n) {
+        page-break-after: always;
+      }
+    }
+
+    /* ── Artwork Card ── */
+    .artwork-card {
+      background: rgba(4, 45, 67, 0.3);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all .4s ease;
+      cursor: pointer;
+    }
+
+    .artwork-card:hover {
+      background: rgba(4, 45, 67, 0.5);
+      border-color: var(--red-dim);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(212, 44, 48, 0.15);
+    }
+
+    .artwork-card:active {
+      transform: translateY(-3px);
+    }
+
+    /* ── Image ── */
+    .artwork-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--surface);
+      cursor: pointer;
+    }
+
+    .artwork-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s ease, filter .4s ease;
+      filter: brightness(0.9);
+    }
+
+    .artwork-card:hover .artwork-image img {
+      transform: scale(1.08);
+      filter: brightness(1);
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 48, 72, 0.97);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    #lightbox.open { display: flex; }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      box-shadow: 0 0 80px rgba(212, 44, 48, 0.1);
+      border: 1px solid var(--border);
+    }
+
+    .lb-close {
+      position: fixed;
+      top: 30px;
+      right: 40px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--muted);
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: color .3s;
+      z-index: 10001;
+    }
+    .lb-close:hover { color: var(--red); }
+
+    .lb-info {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10001;
+    }
+
+    .lb-info .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--cream);
+      margin-bottom: 5px;
+    }
+
+    .lb-info .artist {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .lb-info .details {
+      font-family: 'Raleway', sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      #lightbox {
+        padding: 20px;
+      }
+      
+      .lb-close {
+        top: 15px;
+        right: 20px;
+        font-size: 10px;
+      }
+      
+      .lb-info {
+        bottom: 20px;
+      }
+      
+      .lb-info .title {
+        font-size: 16px;
+      }
+    }
+
+    .placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #042d43, #033048);
+      color: var(--border);
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── Info Section ── */
+    .artwork-info {
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 180px;
+    }
+
+    .artwork-details {
+      flex-grow: 0;
+    }
+
+    .artwork-info .artist {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .artwork-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-style: italic;
+      font-size: 26px;
+      color: var(--cream);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .artwork-info .medium {
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .artwork-info .size {
+      font-family: 'Raleway', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 15px;
+    }
+
+    .artwork-info .price {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      color: var(--cream);
+      opacity: 0.75;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+      text-align: right;
+      margin-top: auto;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 40px;
+      margin-top: 60px;
+    }
+
+    footer p {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .footer-rule {
+      width: 60px;
+      height: 1px;
+      background: var(--red-dim);
+      margin: 15px auto;
+      opacity: 0.4;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .artwork-card {
+      animation: fadeIn .6s ease both;
+    }
+
+    .artwork-card:nth-child(odd) { animation-delay: .1s; }
+    .artwork-card:nth-child(even) { animation-delay: .2s; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-rule">
+    <span></span><i>✦</i><span></span>
+  </div>
+  <p class="subtitle">Exhibition Catalogue</p>
+  <h1><span>Carlos</span> <span>Jorge</span></h1>
+  <p class="header-desc">All Artworks &nbsp;·&nbsp; Fine Art Presentation</p>
+</header>
+
+<nav>
+  <a href="biography.html">Biography</a>
+  <select id="sort-select" onchange="sortArtworks(this.value)">
+    <option value="">Sort by Price</option>
+    <option value="low-high">Price: Low to High</option>
+    <option value="high-low">Price: High to Low</option>
+  </select>
+  <button class="nav-button" onclick="window.print()">Print Catalog</button>
+  <button class="nav-button" onclick="shareLink()">Share Link</button>
+  <button class="nav-button" onclick="downloadPDF()">Download PDF</button>
+</nav>
+
+<!-- Catalog -->
+<div class="catalog">
+  <div class="section-label">
+    <h2>Works on Exhibition</h2>
+    <p>Click any work to enlarge</p>
+  </div>
+
+  <div class="catalog-grid">
+
+    <!-- Artwork 1 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting1.jpg" alt="Cuadro verde sobre naranja" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro verde sobre naranja"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">154 x 172 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 2 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting2.jpg" alt="Bardas 2" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Bardas 2"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">00 x 00 cm</div>
+        <div class="price">$0,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 3 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting3.jpg" alt="Bardas gris /café /azul" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Bardas gris /café /azul"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">188 x 148 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 4 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting4.jpg" alt="Número maya en ocre" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2019</div>
+        <h3>"Número maya en ocre"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">200 x 210 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 5 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting5.jpg" alt="Bardas gris cuadro en ocre" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Bardas gris cuadro en ocre"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">118 x 173 cm</div>
+        <div class="price">$5,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 6 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting6.jpg" alt="Cuadro verde dentro de otro" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro verde dentro de otro"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">131 x 89 cm</div>
+        <div class="price">$4,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 7 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting7.jpg" alt="Cuadro azul" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro azul"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">90 x 130 cm</div>
+        <div class="price">$4,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 8 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting8.jpg" alt="Bardas azules amarillo" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2018</div>
+        <h3>"Bardas azules amarillo"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">144 x 195 cm</div>
+        <div class="price">$5,500</div>
+      </div>
+    </div>
+
+    <!-- Artwork 9 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting9.jpg" alt="Cuadro café y amarillo" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro café y amarillo"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">95 x 92 cm</div>
+        <div class="price">$3,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 10 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting10.jpg" alt="Cuadros rojos rosas naranja" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadros rojos rosas naranja"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">159 x 225 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 11 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting11.jpg" alt="Cuadro café círculos verdes" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro café círculos verdes"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">170 x 202 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 12 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting12.jpg" alt="Cuadro verde naranja y morado" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro verde naranja y morado"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">146 x 107 cm</div>
+        <div class="price">$5,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 13 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting13.jpg" alt="Bardas" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Bardas"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">151 x 122 cm</div>
+        <div class="price">$5,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 14 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting14.jpg" alt="Bardas 3" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Bardas 3"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">00 x 00 cm</div>
+        <div class="price">$0,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 15 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting15.jpg" alt="Zapotes-mujer" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Zapotes-mujer"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">120 x 93 cm</div>
+        <div class="price">$3,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 16 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting16.jpg" alt="Cuadro naranja rayas negras rosas naranjas" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro naranja rayas negras rosas naranjas"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">132 x 164 cm</div>
+        <div class="price">$5,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 17 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting17.jpg" alt="Barda verde con azul naranja rosa" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Barda verde con azul naranja rosa"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">209 x 131 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 18 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting18.jpg" alt="Cuadro naranja rosa" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro naranja rosa"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">95 x 92 cm</div>
+        <div class="price">$3,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 19 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting19.jpg" alt="Cuadro azul amarillo" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro azul amarillo"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">201 x 139 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 20 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting20.jpg" alt="Cuadro azul blanco" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro azul blanco"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">203 x 107 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 21 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting21.jpg" alt="Cuadro melón" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro melón"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">175 x 174 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 22 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting22.jpg" alt="Mandarinas – mujer" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Mandarinas – mujer"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">120 x 93 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 23 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting23.jpg" alt="Cuadros verdes" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadros verdes"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">168 x 173 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 24 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting24.jpg" alt="Bardas 4" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2018</div>
+        <h3>"Bardas 4"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">169 x 136 cm</div>
+        <div class="price">$5,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 25 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting25.jpg" alt="Número Maya Dos" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2019</div>
+        <h3>"Número Maya Dos"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">180 x 200 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 26 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting26.jpg" alt="Cuadro rojo verde negro" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro rojo verde negro"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">130 x 147 cm</div>
+        <div class="price">$5,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 27 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting27.jpg" alt="Cuadro café naranja rosa" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro café naranja rosa"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">143 x 100 cm</div>
+        <div class="price">$4,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 28 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting28.jpg" alt="Bardas grises café negro" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2018</div>
+        <h3>"Bardas grises café negro"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">139 x 202 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 29 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting29.jpg" alt="Bardas 5" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Bardas 5"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">00 x 00 cm</div>
+        <div class="price">$0,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 30 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting30.jpg" alt="Bardas café azul" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2018</div>
+        <h3>"Bardas café azul"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">130 x 106 cm</div>
+        <div class="price">$4,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 31 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting31.jpg" alt="Cuadro verde azul" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro verde azul"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">145 x 175 cm</div>
+        <div class="price">$5,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 32 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting32.jpg" alt="Barda rosa cuadros cafés" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Barda rosa cuadros cafés"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">144 x 203 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 33 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting33.jpg" alt="Número Maya en Café" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2019</div>
+        <h3>"Número Maya en Café"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">180 x 200 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 34 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting34.jpg" alt="Cangrejos y tiburón" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cangrejos y tiburón"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">127 x 145 cm</div>
+        <div class="price">$12,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 36 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting36.jpg" alt="Cuadro azul negro" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Cuadro azul negro"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">181 x 150 cm</div>
+        <div class="price">$6,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 37 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting37.jpg" alt="The holy duo" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"The holy duo"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">144 x 124 cm</div>
+        <div class="price">$8,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 38 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting38.jpg" alt="Chewbacca nutria" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Chewbacca nutria"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">140 x 172 cm</div>
+        <div class="price">$12,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 39 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting39.jpg" alt="Artworks 39" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge</div>
+        <h3>"Artworks 39"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">00 x 00 cm</div>
+        <div class="price">$12,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 40 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting40.jpg" alt="Mujeres plátanos" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2023</div>
+        <h3>"Mujeres plátanos"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">128 x 145 cm</div>
+        <div class="price">$12,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 41 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting41.jpg" alt="A night out" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2023</div>
+        <h3>"A night out"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">168 x 202 cm</div>
+        <div class="price">$15,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 42 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting42.jpg" alt="Padres Batman" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2023</div>
+        <h3>"Padres Batman"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">129 x 147 cm</div>
+        <div class="price">$12,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 43 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting43.jpg" alt="Aquaman" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2023</div>
+        <h3>"Aquaman"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">128 x 145 cm</div>
+        <div class="price">$12,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 44 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting44.jpg" alt="Manos" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2023</div>
+        <h3>"Manos"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">132 x 149 cm</div>
+        <div class="price">$12,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 45 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting45.jpg" alt="A night out" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2023</div>
+        <h3>"A night out"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">168 x 202 cm</div>
+        <div class="price">$15,000</div>
+      </div>
+    </div>
+
+    <!-- Artwork 46 -->
+    <div class="artwork-card">
+      <div class="artwork-image">
+        <img src="images/painting46.jpg" alt="The inocent" />
+      </div>
+      <div class="artwork-info">
+        <div class="artist">Carlos Jorge · 2021</div>
+        <h3>"The inocent"</h3>
+        <div class="medium">Oil on canvas</div>
+        <div class="size">148 x 132 cm</div>
+        <div class="price">$12,000</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()">
+  <span class="lb-close">✕ &nbsp;Close</span>
+  <img id="lb-img" src="" alt="" onclick="event.stopPropagation()"/>
+  <div class="lb-info" onclick="event.stopPropagation()">
+    <div class="artist" id="lb-artist"></div>
+    <div class="title" id="lb-title"></div>
+    <div class="details" id="lb-details"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-rule"></div>
+  <p>Carlos Jorge · Art Collection</p>
+  <div class="footer-rule"></div>
+</footer>
+
+<script>
+  // ── Share Link Function ──
+  function shareLink() {
+    const url = window.location.href;
+    
+    // Try to use native share API (mobile)
+    if (navigator.share) {
+      navigator.share({
+        title: 'Carlos Jorge - Art Catalog',
+        text: 'View Carlos Jorge\'s art collection',
+        url: url
+      }).catch(() => {
+        // Fallback to copy
+        copyToClipboard(url);
+      });
+    } else {
+      // Desktop - copy to clipboard
+      copyToClipboard(url);
+    }
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Link copied to clipboard!');
+    }).catch(() => {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      alert('Link copied to clipboard!');
+    });
+  }
+
+  // ── PDF Download Function ──
+  function downloadPDF() {
+    alert('To save as PDF:\n\n1. Click "Print Catalog"\n2. Choose "Save as PDF" as your printer\n3. Click "Save"\n\nThis will create a professional PDF of the catalog.');
+    window.print();
+  }
+
+  // ── Make each artwork clickable to open lightbox ──
+  document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.artwork-card');
+    
+    cards.forEach(card => {
+      const image = card.querySelector('.artwork-image img');
+      const title = card.querySelector('h3').textContent;
+      const artist = card.querySelector('.artist').textContent;
+      const medium = card.querySelector('.medium').textContent;
+      const size = card.querySelector('.size').textContent;
+      const price = card.querySelector('.price').textContent;
+      
+      card.addEventListener('click', function() {
+        openLightbox(image.src, title, artist, `${medium} • ${size} • ${price}`);
+      });
+    });
+  });
+
+  function openLightbox(src, title, artist, details) {
+    document.getElementById('lb-img').src = src;
+    document.getElementById('lb-title').textContent = title;
+    document.getElementById('lb-artist').textContent = artist;
+    document.getElementById('lb-details').textContent = details;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  // ── Sort function ──
+  function sortArtworks(sortType) {
+    if (!sortType) return;
+    
+    const grid = document.querySelector('.catalog-grid');
+    const cards = Array.from(grid.children);
+    
+    // Extract price as number for sorting
+    const parsePrice = (priceStr) => {
+      const num = priceStr.replace(/[^0-9]/g, '');
+      return parseInt(num) || 0;
+    };
+    
+    // Sort based on selection
+    cards.sort((a, b) => {
+      const priceA = parsePrice(a.querySelector('.price').textContent);
+      const priceB = parsePrice(b.querySelector('.price').textContent);
+      
+      if (sortType === 'low-high') {
+        return priceA - priceB;
+      } else if (sortType === 'high-low') {
+        return priceB - priceA;
+      }
+      return 0;
+    });
+    
+    // Re-append in sorted order
+    cards.forEach(card => grid.appendChild(card));
+  }
+</script>
+
+</body>
+</html>
