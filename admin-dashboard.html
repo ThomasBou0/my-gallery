@@ -312,6 +312,12 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
+        .image-upload-box.drag-over {
+            border-color: var(--yellow);
+            background: rgba(250, 190, 86, 0.08);
+            transform: scale(1.02);
+        }
+
         .image-upload-box input[type="file"] {
             display: none;
         }
@@ -878,29 +884,44 @@
                 <div class="form-group">
                     <label>Images (3 maximum - Main + Details) *</label>
                     <div class="image-upload-grid">
-                        <div class="image-upload-box" onclick="document.getElementById('image1').click()">
+                        <div class="image-upload-box"
+                            onclick="document.getElementById('image1').click()"
+                            ondragover="handleImageDragOver(event, this)"
+                            ondragleave="handleImageDragLeave(this)"
+                            ondrop="handleImageDrop(event, 1)">
                             <input type="file" id="image1" accept="image/*" onchange="handleImageSelect(1)">
                             <div class="placeholder">
                                 <div class="icon">+</div>
                                 <div class="text">Main Image</div>
+                                <div style="font-size:11px; color:var(--muted); margin-top:4px;">Click or drag & drop</div>
                             </div>
                             <img class="preview" id="preview1">
                             <button type="button" class="remove-image" onclick="removeImage(1, event)">×</button>
                         </div>
-                        <div class="image-upload-box" onclick="document.getElementById('image2').click()">
+                        <div class="image-upload-box"
+                            onclick="document.getElementById('image2').click()"
+                            ondragover="handleImageDragOver(event, this)"
+                            ondragleave="handleImageDragLeave(this)"
+                            ondrop="handleImageDrop(event, 2)">
                             <input type="file" id="image2" accept="image/*" onchange="handleImageSelect(2)">
                             <div class="placeholder">
                                 <div class="icon">+</div>
                                 <div class="text">Detail 1</div>
+                                <div style="font-size:11px; color:var(--muted); margin-top:4px;">Click or drag & drop</div>
                             </div>
                             <img class="preview" id="preview2">
                             <button type="button" class="remove-image" onclick="removeImage(2, event)">×</button>
                         </div>
-                        <div class="image-upload-box" onclick="document.getElementById('image3').click()">
+                        <div class="image-upload-box"
+                            onclick="document.getElementById('image3').click()"
+                            ondragover="handleImageDragOver(event, this)"
+                            ondragleave="handleImageDragLeave(this)"
+                            ondrop="handleImageDrop(event, 3)">
                             <input type="file" id="image3" accept="image/*" onchange="handleImageSelect(3)">
                             <div class="placeholder">
                                 <div class="icon">+</div>
                                 <div class="text">Detail 2</div>
+                                <div style="font-size:11px; color:var(--muted); margin-top:4px;">Click or drag & drop</div>
                             </div>
                             <img class="preview" id="preview3">
                             <button type="button" class="remove-image" onclick="removeImage(3, event)">×</button>
@@ -1238,6 +1259,35 @@ measurementId: "G-NS9WD57EPC"
 
             document.getElementById('deleteArtworkBtn').style.display = 'block';
             document.getElementById('artworkModal').classList.add('active');
+        };
+
+        // Handle image drag & drop
+        window.handleImageDragOver = (event, box) => {
+            event.preventDefault();
+            event.stopPropagation();
+            box.classList.add('drag-over');
+        };
+
+        window.handleImageDragLeave = (box) => {
+            box.classList.remove('drag-over');
+        };
+
+        window.handleImageDrop = (event, index) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const box = event.currentTarget;
+            box.classList.remove('drag-over');
+            const file = event.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                selectedImages[index - 1] = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById(`preview${index}`);
+                    preview.src = e.target.result;
+                    box.classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            }
         };
 
         // Handle image selection
