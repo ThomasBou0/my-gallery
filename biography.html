@@ -30,7 +30,6 @@
       line-height: 1.7;
     }
 
-    /* ── Grain overlay ── */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -99,14 +98,8 @@
       margin-bottom: 8px;
     }
 
-    h1 span {
-      color: var(--red);
-    }
-
-    h1 em {
-      font-style: italic;
-      color: var(--red);
-    }
+    h1 span { color: var(--red); }
+    h1 em { font-style: italic; color: var(--red); }
 
     .header-desc {
       font-family: 'Raleway', sans-serif;
@@ -136,14 +129,44 @@
       text-decoration: none;
       transition: color .3s;
     }
-
     nav a:hover { color: var(--red); }
+
+    /* ── Loading ── */
+    .loading-state {
+      text-align: center;
+      padding: 100px 20px;
+      color: var(--muted);
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--border);
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── Content ── */
     .container {
       max-width: 900px;
       margin: 0 auto;
       padding: 80px 40px 100px;
+    }
+
+    /* ── Artist portrait ── */
+    .artist-portrait {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      display: block;
+      margin: 0 auto 40px;
+      filter: brightness(0.9);
     }
 
     .intro {
@@ -166,9 +189,7 @@
       opacity: 0.9;
     }
 
-    .bio-section {
-      margin-bottom: 40px;
-    }
+    .bio-section { margin-bottom: 40px; }
 
     .bio-section p {
       font-size: 16px;
@@ -239,8 +260,8 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    header .subtitle  { animation: fadeDown .8s ease .1s both; }
-    header h1         { animation: fadeDown .9s ease .25s both; }
+    header .subtitle    { animation: fadeDown .8s ease .1s both; }
+    header h1           { animation: fadeDown .9s ease .25s both; }
     header .header-desc { animation: fadeDown .8s ease .45s both; }
 
     @keyframes fadeIn {
@@ -248,21 +269,24 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .container > * {
-      animation: fadeIn .8s ease both;
+    .container > * { animation: fadeIn .8s ease both; }
+
+    @media (max-width: 768px) {
+      .container { padding: 40px 20px 80px; }
+      nav { gap: 16px; padding: 20px; }
+      header { padding: 50px 20px 40px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Header -->
 <header>
   <div class="header-rule">
     <span></span><i>✦</i><span></span>
   </div>
   <p class="subtitle">Artist Biography</p>
-  <h1><span>Carlos</span> <em>Jorge</em></h1>
-  <p class="header-desc">Mexican Artist &nbsp;·&nbsp; b. 1970</p>
+  <h1 id="artistName"><span>Carlos</span> <em>Jorge</em></h1>
+  <p class="header-desc" id="artistMeta">Mexican Artist &nbsp;·&nbsp; b. 1970</p>
 </header>
 
 <nav>
@@ -270,90 +294,260 @@
   <a href="catalog-complete.html">Catalog</a>
 </nav>
 
-<!-- Content -->
-<div class="container">
-  <div class="intro">
-    Carlos Jorge (b. 1970) is a Mexican artist, currently based in Miami, who is most known for his large-scale paintings that display vibrant and exuberant use of color. The artist uses his canvas to express surreal narratives, an exercise of memory, in which pop iconography, fashion, and allusions to Miró and Gauguin collide. With deliberate employment of color and texture, the artist's abstractions create planes of bright and evocative imagery.
-  </div>
-
-  <div class="bio-section">
-    <h2>Education</h2>
-    <ul class="exhibition-list">
-      <li>International School of Art, Umbria, Italia - Painting and Sculpture (studied under Wayne Thiebaud and Knox Martin)</li>
-      <li>Instituto Tecnológico y de Estudios Superiores de Monterrey, México - Architecture</li>
-      <li>Universidad de El Mayab, Mérida, Yucatán, México - Business</li>
-      <li>Briar Cliff College, Miami, Florida, USA - Business</li>
-    </ul>
-  </div>
-
-  <div class="bio-section">
-    <h2>Solo Exhibitions (Selected)</h2>
-    <ul class="exhibition-list">
-      <li><span class="year">2025</span> "CARLOS JORGE PAINTINGS" <span class="location">Liquid Art System, Miami, Florida, USA</span></li>
-      <li><span class="year">2025</span> "CARLOS JORGE PINTURAS" <span class="location">Alejandra Topete Gallery, Ciudad de México</span></li>
-      <li><span class="year">2023</span> "SELENOFILIA" <span class="location">Fabien Castanier Gallery, Miami, Florida, USA</span></li>
-      <li><span class="year">2022</span> "THE FORCE" <span class="location">Pen Project, Miami, Florida, USA</span></li>
-      <li><span class="year">2021</span> "THE FORCE" <span class="location">Paramount World Center, Miami, Florida, USA</span></li>
-      <li><span class="year">2021</span> "BARDAS" <span class="location">Museo de la Ciudad, Mérida, Yucatán, México</span></li>
-      <li><span class="year">2021</span> "FORM AND COLOR" <span class="location">Galería Black Ship, Miami, Florida, USA</span></li>
-      <li><span class="year">2020</span> "CARLOS JORGE" <span class="location">Fannaporter Gallery, Dubai</span></li>
-      <li><span class="year">2020</span> "MUROS DE LUZ" <span class="location">Malosa Gallery, Chicago, Illinois, USA</span></li>
-      <li><span class="year">2020</span> "CARLOS JORGE" <span class="location">Paramount World Center, Miami, Florida, USA</span></li>
-      <li><span class="year">2019</span> "BARDAS" <span class="location">Malosa Gallery, Chicago, Illinois, USA</span></li>
-      <li><span class="year">2018</span> "BARDAS" <span class="location">Dotfiftyone Gallery, Miami, Florida, USA</span></li>
-      <li><span class="year">2016</span> "CARLOS JORGE, PINTURAS" <span class="location">Museo de la Ciudad, Mérida, Yucatán, México</span></li>
-      <li><span class="year">2012</span> "LOS FAMOSOS" <span class="location">Galería Casa Colon, Mérida, Yucatán, México</span></li>
-      <li><span class="year">2010</span> "EL REY AZUL" <span class="location">Centro Cultural Olimpo, Mérida, Yucatán, México</span></li>
-      <li><span class="year">2007</span> "SUPER LIGHT" <span class="location">Galería Casa Colon, Mérida, Yucatán, México</span></li>
-      <li><span class="year">2006</span> "SUPER MORFINA" <span class="location">Dotfiftyone Gallery, Miami, Florida, USA</span></li>
-      <li><span class="year">1997</span> "VISIONES" <span class="location">Galería Casa Colon, Mérida, Yucatán, México</span></li>
-      <li><span class="year">1993</span> "GENESIS" <span class="location">La Galería, Mérida, Yucatán, México</span></li>
-    </ul>
-  </div>
-
-  <div class="bio-section">
-    <h2>Group Exhibitions (Selected)</h2>
-    <ul class="exhibition-list">
-      <li><span class="year">2025</span> "Make-A-Wish" <span class="location">Ball Foundation, Miami, Florida, USA</span></li>
-      <li><span class="year">2024</span> "Visionary Realms" <span class="location">Fabien Castanier Gallery, Miami, Florida, USA</span></li>
-      <li><span class="year">2023</span> "Art Miami" <span class="location">Miami, Florida, USA</span></li>
-      <li><span class="year">2022</span> "5600 GALLERY" <span class="location">Miami, Florida, USA</span></li>
-      <li><span class="year">2022</span> "LOS COLORES DE MIAMI" <span class="location">Consulado Mexicano & Colombiano, Miami, Florida, USA</span></li>
-      <li><span class="year">2022</span> "SUNKISSED" <span class="location">Fabien Castanier Gallery, Miami, Florida, USA</span></li>
-      <li><span class="year">2022</span> "EXPOSICIÓN COLECTIVA" <span class="location">Consulado Mexicano en Miami, Florida, USA</span></li>
-      <li><span class="year">2011</span> "ARTISTAS LATINOAMERICANOS" <span class="location">Universidad de California, USA</span></li>
-      <li><span class="year">1998</span> Séptima Bienal de Artes Visuales de Yucatán <span class="location">Museo del Chopo, Ciudad de México</span></li>
-    </ul>
-  </div>
-
-  <div class="bio-section">
-    <h2>Awards & Recognition</h2>
-    <ul class="exhibition-list">
-      <li><span class="year">1997</span> Honorable Mention, Seventh Biennial of Visual Arts, Mérida, Yucatán, México</li>
-      <li><span class="year">1998</span> Selected for the Eighth Biennial of Visual Arts of Yucatán, Mérida, Yucatán, México</li>
-    </ul>
-  </div>
-
-  <div class="bio-section">
-    <h2>Collections</h2>
-    <ul class="exhibition-list">
-      <li>Museum of Contemporary Art (MACAY), Mérida, Yucatán, México</li>
-      <li>Museo de la Ciudad, Mérida, Yucatán, México</li>
-      <li>MOLAA (Museum of Latin American Art), Long Beach, California, USA</li>
-      <li>Paramount World Center, Miami, Florida, USA</li>
-      <li>Miami-Dade Public Library System, Miami, Florida, USA</li>
-      <li>Silvester Cancer Association, Miami, Florida, USA</li>
-      <li>Numerous private collections</li>
-    </ul>
-  </div>
+<div id="loadingState" class="loading-state">
+  <div class="loading-spinner"></div>
+  <p style="font-family:'Cinzel',serif; font-size:11px; letter-spacing:3px; text-transform:uppercase;">Loading biography...</p>
 </div>
 
-<!-- Footer -->
+<div class="container" id="bioContainer" style="display:none;"></div>
+
 <footer>
   <div class="footer-rule"></div>
-  <p>Carlos Jorge &nbsp;·&nbsp; Artist Biography</p>
+  <p id="footerName">Carlos Jorge &nbsp;·&nbsp; Artist Biography</p>
   <div class="footer-rule"></div>
 </footer>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+  import { getFirestore, collection, getDocs, query, limit } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBqhrpdW3EfWTt5nEzIgYm1ZgQ9xNY9boQ",
+    authDomain: "art4-gallery-2.firebaseapp.com",
+    projectId: "art4-gallery-2",
+    storageBucket: "art4-gallery-2.firebasestorage.app",
+    messagingSenderId: "609814180320",
+    appId: "1:609814180320:web:22be08dc05b8099ae0fb85"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function loadBiography() {
+    try {
+      const snapshot = await getDocs(query(collection(db, 'artists'), limit(10)));
+      
+      if (snapshot.empty) {
+        renderFallback();
+        return;
+      }
+
+      // Find Carlos Jorge specifically, or use first artist
+      let artistData = null;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (!artistData || (data.name && data.name.toLowerCase().includes('carlos'))) {
+          artistData = { id: doc.id, ...data };
+        }
+      });
+
+      if (artistData) {
+        renderBiography(artistData);
+      } else {
+        renderFallback();
+      }
+
+    } catch (error) {
+      console.error('Error loading biography:', error);
+      renderFallback();
+    }
+  }
+
+  function renderBiography(artist) {
+    // Update header
+    const nameParts = (artist.name || 'Carlos Jorge').split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ');
+    document.getElementById('artistName').innerHTML =
+      `<span>${firstName}</span> <em>${lastName}</em>`;
+
+    const nationality = artist.nationality || 'Mexican Artist';
+    const birthYear = artist.birthYear || artist.born || '';
+    document.getElementById('artistMeta').innerHTML =
+      `${nationality}${birthYear ? ` &nbsp;·&nbsp; b. ${birthYear}` : ''}`;
+    document.getElementById('footerName').innerHTML =
+      `${artist.name || 'Carlos Jorge'} &nbsp;·&nbsp; Artist Biography`;
+
+    document.title = `${artist.name || 'Carlos Jorge'} - Biography`;
+
+    // Build content
+    let html = '';
+
+    // Portrait image if available
+    if (artist.photoUrl || artist.profileImage) {
+      html += `<img class="artist-portrait" src="${artist.photoUrl || artist.profileImage}" alt="${artist.name}" />`;
+    }
+
+    // Biography / intro text
+    if (artist.biography) {
+      // Parse the biography field — it may contain sections separated by known keywords
+      const bio = artist.biography;
+
+      // Try to extract intro (first paragraph before "Education")
+      const eduIndex = bio.indexOf('Education');
+      const introText = eduIndex > 0 ? bio.substring(0, eduIndex).trim() : bio.substring(0, 400).trim();
+
+      if (introText) {
+        html += `<div class="intro">${introText}</div>`;
+      }
+
+      // Parse sections from biography text
+      const sections = parseBiographySections(bio);
+      sections.forEach(section => {
+        html += renderSection(section);
+      });
+
+    } else {
+      // Fallback — render static content
+      html += renderStaticContent();
+    }
+
+    document.getElementById('bioContainer').innerHTML = html;
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('bioContainer').style.display = 'block';
+  }
+
+  function parseBiographySections(bio) {
+    const sectionKeywords = [
+      'Education', 'Solo Exhibitions', 'Group Exhibitions',
+      'Awards', 'Collections', 'Recognition'
+    ];
+
+    const sections = [];
+    let remaining = bio;
+
+    sectionKeywords.forEach(keyword => {
+      const idx = remaining.indexOf(keyword);
+      if (idx >= 0) {
+        // Find next section start
+        let nextIdx = remaining.length;
+        sectionKeywords.forEach(kw => {
+          if (kw !== keyword) {
+            const ki = remaining.indexOf(kw, idx + keyword.length);
+            if (ki > idx && ki < nextIdx) nextIdx = ki;
+          }
+        });
+
+        const content = remaining.substring(idx + keyword.length, nextIdx).trim();
+        if (content) {
+          sections.push({ title: keyword, content });
+        }
+      }
+    });
+
+    return sections;
+  }
+
+  function renderSection(section) {
+    // Split content into lines and render as list items
+    const lines = section.content
+      .split(/[-\n·•]/)
+      .map(l => l.trim())
+      .filter(l => l.length > 3);
+
+    if (lines.length === 0) return '';
+
+    const items = lines.map(line => {
+      // Detect year at start of line
+      const yearMatch = line.match(/^(\d{4})\s+(.+)/);
+      if (yearMatch) {
+        return `<li><span class="year">${yearMatch[1]}</span> ${yearMatch[2]}</li>`;
+      }
+      return `<li>${line}</li>`;
+    }).join('');
+
+    return `
+      <div class="bio-section">
+        <h2>${section.title}</h2>
+        <ul class="exhibition-list">${items}</ul>
+      </div>`;
+  }
+
+  function renderFallback() {
+    // Render the static content as fallback
+    document.getElementById('bioContainer').innerHTML = renderStaticContent();
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('bioContainer').style.display = 'block';
+  }
+
+  function renderStaticContent() {
+    return `
+      <div class="intro">
+        Carlos Jorge (b. 1970) is a Mexican artist, currently based in Miami, who is most known for his large-scale paintings that display vibrant and exuberant use of color. The artist uses his canvas to express surreal narratives, an exercise of memory, in which pop iconography, fashion, and allusions to Miró and Gauguin collide. With deliberate employment of color and texture, the artist's abstractions create planes of bright and evocative imagery.
+      </div>
+
+      <div class="bio-section">
+        <h2>Education</h2>
+        <ul class="exhibition-list">
+          <li>International School of Art, Umbria, Italia — Painting and Sculpture (studied under Wayne Thiebaud and Knox Martin)</li>
+          <li>Instituto Tecnológico y de Estudios Superiores de Monterrey, México — Architecture</li>
+          <li>Universidad de El Mayab, Mérida, Yucatán, México — Business</li>
+          <li>Briar Cliff College, Miami, Florida, USA — Business</li>
+        </ul>
+      </div>
+
+      <div class="bio-section">
+        <h2>Solo Exhibitions (Selected)</h2>
+        <ul class="exhibition-list">
+          <li><span class="year">2025</span> "CARLOS JORGE PAINTINGS" <span class="location">Liquid Art System, Miami, Florida, USA</span></li>
+          <li><span class="year">2025</span> "CARLOS JORGE PINTURAS" <span class="location">Alejandra Topete Gallery, Ciudad de México</span></li>
+          <li><span class="year">2023</span> "SELENOFILIA" <span class="location">Fabien Castanier Gallery, Miami, Florida, USA</span></li>
+          <li><span class="year">2022</span> "THE FORCE" <span class="location">Pen Project, Miami, Florida, USA</span></li>
+          <li><span class="year">2021</span> "THE FORCE" <span class="location">Paramount World Center, Miami, Florida, USA</span></li>
+          <li><span class="year">2021</span> "BARDAS" <span class="location">Museo de la Ciudad, Mérida, Yucatán, México</span></li>
+          <li><span class="year">2021</span> "FORM AND COLOR" <span class="location">Galería Black Ship, Miami, Florida, USA</span></li>
+          <li><span class="year">2020</span> "CARLOS JORGE" <span class="location">Fannaporter Gallery, Dubai</span></li>
+          <li><span class="year">2020</span> "MUROS DE LUZ" <span class="location">Malosa Gallery, Chicago, Illinois, USA</span></li>
+          <li><span class="year">2019</span> "BARDAS" <span class="location">Malosa Gallery, Chicago, Illinois, USA</span></li>
+          <li><span class="year">2018</span> "BARDAS" <span class="location">Dotfiftyone Gallery, Miami, Florida, USA</span></li>
+          <li><span class="year">2016</span> "CARLOS JORGE, PINTURAS" <span class="location">Museo de la Ciudad, Mérida, Yucatán, México</span></li>
+          <li><span class="year">2012</span> "LOS FAMOSOS" <span class="location">Galería Casa Colon, Mérida, Yucatán, México</span></li>
+          <li><span class="year">2010</span> "EL REY AZUL" <span class="location">Centro Cultural Olimpo, Mérida, Yucatán, México</span></li>
+          <li><span class="year">2007</span> "SUPER LIGHT" <span class="location">Galería Casa Colon, Mérida, Yucatán, México</span></li>
+          <li><span class="year">2006</span> "SUPER MORFINA" <span class="location">Dotfiftyone Gallery, Miami, Florida, USA</span></li>
+          <li><span class="year">1997</span> "VISIONES" <span class="location">Galería Casa Colon, Mérida, Yucatán, México</span></li>
+          <li><span class="year">1993</span> "GENESIS" <span class="location">La Galería, Mérida, Yucatán, México</span></li>
+        </ul>
+      </div>
+
+      <div class="bio-section">
+        <h2>Group Exhibitions (Selected)</h2>
+        <ul class="exhibition-list">
+          <li><span class="year">2025</span> "Make-A-Wish" <span class="location">Ball Foundation, Miami, Florida, USA</span></li>
+          <li><span class="year">2024</span> "Visionary Realms" <span class="location">Fabien Castanier Gallery, Miami, Florida, USA</span></li>
+          <li><span class="year">2023</span> "Art Miami" <span class="location">Miami, Florida, USA</span></li>
+          <li><span class="year">2022</span> "5600 GALLERY" <span class="location">Miami, Florida, USA</span></li>
+          <li><span class="year">2022</span> "LOS COLORES DE MIAMI" <span class="location">Consulado Mexicano & Colombiano, Miami, Florida, USA</span></li>
+          <li><span class="year">2022</span> "SUNKISSED" <span class="location">Fabien Castanier Gallery, Miami, Florida, USA</span></li>
+          <li><span class="year">2011</span> "ARTISTAS LATINOAMERICANOS" <span class="location">Universidad de California, USA</span></li>
+          <li><span class="year">1998</span> Séptima Bienal de Artes Visuales de Yucatán <span class="location">Museo del Chopo, Ciudad de México</span></li>
+        </ul>
+      </div>
+
+      <div class="bio-section">
+        <h2>Awards & Recognition</h2>
+        <ul class="exhibition-list">
+          <li><span class="year">1997</span> Honorable Mention, Seventh Biennial of Visual Arts, Mérida, Yucatán, México</li>
+          <li><span class="year">1998</span> Selected for the Eighth Biennial of Visual Arts of Yucatán, Mérida, Yucatán, México</li>
+        </ul>
+      </div>
+
+      <div class="bio-section">
+        <h2>Collections</h2>
+        <ul class="exhibition-list">
+          <li>Museum of Contemporary Art (MACAY), Mérida, Yucatán, México</li>
+          <li>Museo de la Ciudad, Mérida, Yucatán, México</li>
+          <li>MOLAA (Museum of Latin American Art), Long Beach, California, USA</li>
+          <li>Paramount World Center, Miami, Florida, USA</li>
+          <li>Miami-Dade Public Library System, Miami, Florida, USA</li>
+          <li>Silvester Cancer Association, Miami, Florida, USA</li>
+          <li>Numerous private collections</li>
+        </ul>
+      </div>`;
+  }
+
+  loadBiography();
+</script>
 
 </body>
 </html>
