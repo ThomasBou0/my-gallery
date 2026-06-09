@@ -367,10 +367,8 @@
       `${nationality}${birthYear ? ` &nbsp;·&nbsp; b. ${birthYear}` : ''}`;
     document.getElementById('footerName').innerHTML =
       `${artist.name || 'Carlos Jorge'} &nbsp;·&nbsp; Artist Biography`;
-
     document.title = `${artist.name || 'Carlos Jorge'} - Biography`;
 
-    // Build content
     let html = '';
 
     // Portrait image if available
@@ -378,33 +376,75 @@
       html += `<img class="artist-portrait" src="${artist.photoUrl || artist.profileImage}" alt="${artist.name}" />`;
     }
 
-    // Biography / intro text
-    if (artist.biography) {
-      // Parse the biography field — it may contain sections separated by known keywords
+    // Check for structured bio fields (from PDF import)
+    if (artist.bioIntro || artist.bioEducation || artist.bioSoloExhibitions) {
+      html += renderStructuredBio(artist);
+    } else if (artist.biography) {
+      // Fallback: parse raw biography text
       const bio = artist.biography;
-
-      // Try to extract intro (first paragraph before "Education")
       const eduIndex = bio.indexOf('Education');
       const introText = eduIndex > 0 ? bio.substring(0, eduIndex).trim() : bio.substring(0, 400).trim();
-
-      if (introText) {
-        html += `<div class="intro">${introText}</div>`;
-      }
-
-      // Parse sections from biography text
+      if (introText) html += `<div class="intro">${introText}</div>`;
       const sections = parseBiographySections(bio);
-      sections.forEach(section => {
-        html += renderSection(section);
-      });
-
+      sections.forEach(section => { html += renderSection(section); });
     } else {
-      // Fallback — render static content
       html += renderStaticContent();
     }
 
     document.getElementById('bioContainer').innerHTML = html;
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('bioContainer').style.display = 'block';
+  }
+
+  function renderStructuredBio(artist) {
+    let html = '';
+
+    if (artist.bioIntro) {
+      html += `<div class="intro">${artist.bioIntro}</div>`;
+    }
+
+    if (artist.bioEducation) {
+      html += renderSectionFromText('Education', artist.bioEducation);
+    }
+
+    if (artist.bioSoloExhibitions) {
+      html += renderSectionFromText('Solo Exhibitions (Selected)', artist.bioSoloExhibitions);
+    }
+
+    if (artist.bioGroupExhibitions) {
+      html += renderSectionFromText('Group Exhibitions (Selected)', artist.bioGroupExhibitions);
+    }
+
+    if (artist.bioAwards) {
+      html += renderSectionFromText('Awards & Recognition', artist.bioAwards);
+    }
+
+    if (artist.bioCollections) {
+      html += renderSectionFromText('Collections', artist.bioCollections);
+    }
+
+    return html;
+  }
+
+  function renderSectionFromText(title, text) {
+    if (!text || !text.trim()) return '';
+
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 2);
+    if (lines.length === 0) return '';
+
+    const items = lines.map(line => {
+      const yearMatch = line.match(/^(\d{4})\s+(.+)/);
+      if (yearMatch) {
+        return `<li><span class="year">${yearMatch[1]}</span> ${yearMatch[2]}</li>`;
+      }
+      return `<li>${line}</li>`;
+    }).join('');
+
+    return `
+      <div class="bio-section">
+        <h2>${title}</h2>
+        <ul class="exhibition-list">${items}</ul>
+      </div>`;
   }
 
   function parseBiographySections(bio) {
