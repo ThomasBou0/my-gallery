@@ -586,10 +586,29 @@
 
   let allArtworks = [];
   let currentFilter = '';
+  let artistCurrencies = {}; // artistId -> currency code
 
-  // ── Load artworks from Firestore ──
+  // Currency symbol helper
+  const CURRENCY_SYMBOLS = { USD: '$', EUR: '€', GBP: '£', MXN: 'MX$' };
+  function getCurrencySymbol(code) { return CURRENCY_SYMBOLS[code] || '$'; }
+  function getArtworkCurrency(artwork) {
+    return artistCurrencies[artwork.artistId] || 'USD';
+  }
+  function formatPrice(artwork) {
+    if (!artwork.price) return 'Price on request';
+    const symbol = getCurrencySymbol(getArtworkCurrency(artwork));
+    return `${symbol}${Number(artwork.price).toLocaleString('en-US')}`;
+  }
+
+  // ── Load artists (for currencies) then artworks ──
   async function loadArtworks() {
     try {
+      // First load artist currencies
+      const artistsSnap = await getDocs(collection(db, 'artists'));
+      artistsSnap.forEach(doc => {
+        artistCurrencies[doc.id] = doc.data().currency || 'USD';
+      });
+
       const q = query(collection(db, 'artworks'), orderBy('title'));
       const snapshot = await getDocs(q);
       allArtworks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -628,9 +647,7 @@
         ? `${artwork.artistName || 'Carlos Jorge'} · ${artwork.year}`
         : `${artwork.artistName || 'Carlos Jorge'}`;
 
-      const priceFormatted = artwork.price
-        ? `$${Number(artwork.price).toLocaleString('en-US')}`
-        : 'Price on request';
+      const priceFormatted = formatPrice(artwork);
 
       return `
         <div class="artwork-card" 
